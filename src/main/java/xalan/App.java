@@ -16,11 +16,12 @@ public class App {
     }
 
     private void transform() throws Exception {
-        properties.loadFromXML(App.class.getResourceAsStream("/jaxb.xml"));
+        properties.loadFromXML(App.class.getResourceAsStream("/xalan.xml"));
         URI xmlFileURI = new URI(properties.getProperty("xml"));
         URI xsdFileURI = new URI(properties.getProperty("xsd"));
         URI xslFileURI = new URI(properties.getProperty("xsl"));
         URI outputFileURI = new URI(properties.getProperty("output"));
+        x.transform(xmlFileURI, xslFileURI, outputFileURI);
     }
 
 }
