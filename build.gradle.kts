@@ -24,8 +24,12 @@ dependencies {
     // This dependency is found on compile classpath of this component and consumers.
     implementation("com.google.guava:guava:26.0-jre")
 
-    compile (group="xalan", name="xalan", version="2.7.2")
-    compile (group="xerces", name="xercesImpl", version="2.12.0")
+
+    compile (group = "org.ccil.cowan.tagsoup"  , name = "tagsoup"     , version = "1.2.1")
+    compile (group = "net.sf.saxon"            , name = "Saxon-HE"    , version = "9.9.0-2")
+    compile (group = "xalan"                   , name = "xalan"       , version = "2.7.2")
+    compile (group = "xerces"                  , name = "xercesImpl"  , version = "2.12.0")
+
 
 
 
