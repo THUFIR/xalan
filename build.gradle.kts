@@ -24,8 +24,20 @@ dependencies {
     // This dependency is found on compile classpath of this component and consumers.
     implementation("com.google.guava:guava:26.0-jre")
 
-    // Use TestNG framework, also requires calling test.useTestNG() below
-    testImplementation("org.testng:testng:6.14.3")
+    compile (group="xalan", name="xalan", version="2.7.2")
+    compile (group="xerces", name="xercesImpl", version="2.12.0")
+
+
+
+// https://mvnrepository.com/artifact/xalan/xalan
+//compile group: 'xalan', name: 'xalan', version: '2.7.2'
+
+// https://mvnrepository.com/artifact/xerces/xercesImpl
+//compile group: 'xerces', name: 'xercesImpl', version: '2.12.0'
+
+//    compile (group = "org.ccil.cowan.tagsoup" , name = "tagsoup"  , version = "1.2.1")
+//    compile (group = "com.opencsv"            , name = "opencsv"  , version = "4.4")
+//    testImplementation("org.testng:testng:6.14.3")
 }
 
 application {
