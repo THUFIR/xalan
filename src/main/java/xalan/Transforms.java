@@ -2,7 +2,9 @@ package xalan;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.net.URI;
+import java.net.URL;
 import java.util.Properties;
 import java.util.logging.Logger;
 import javax.xml.transform.Result;
@@ -22,7 +24,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-
 public class Transforms {
 
     private static final Logger LOG = Logger.getLogger(Transforms.class.getName());
@@ -35,12 +36,16 @@ public class Transforms {
         this.properties = properties;
     }
 
-    public void withJAXP() throws Exception {
+    public Result withJAXP() throws Exception {
+        URL xml = new URL(properties.getProperty("url"));       
+        InputStream stream = xml.openStream();
+        InputSource source = new InputSource(stream);
         TransformerFactory factory = TransformerFactory.newInstance();
         XMLReader xmlReader = XMLReaderFactory.createXMLReader("org.ccil.cowan.tagsoup.Parser");
-        Source input = new SAXSource(xmlReader, new InputSource("http://books.toscrape.com/"));
+        Source input = new SAXSource(xmlReader, source);
         Result output = new StreamResult(System.out);
         factory.newTransformer().transform(input, output);
+        return output;
     }
 
     public void saxonTransform() throws Exception {
