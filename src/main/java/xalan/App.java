@@ -17,7 +17,8 @@ public class App {
     private void transform() throws Exception {
         properties.loadFromXML(App.class.getResourceAsStream("/xalan.xml"));
         x = new Transforms(properties);
-        x.saxonTransform();
+        //  x.saxonTransform();
+        x.withJAXP();
     }
 
 }

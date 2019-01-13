@@ -5,8 +5,11 @@ import java.io.FileOutputStream;
 import java.net.URI;
 import java.util.Properties;
 import java.util.logging.Logger;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import net.sf.saxon.s9api.Processor;
@@ -15,6 +18,10 @@ import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XsltCompiler;
 import net.sf.saxon.s9api.XsltExecutable;
 import net.sf.saxon.s9api.XsltTransformer;
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
+
 
 public class Transforms {
 
@@ -26,6 +33,14 @@ public class Transforms {
 
     public Transforms(Properties properties) {
         this.properties = properties;
+    }
+
+    public void withJAXP() throws Exception {
+        TransformerFactory factory = TransformerFactory.newInstance();
+        XMLReader xmlReader = XMLReaderFactory.createXMLReader("org.ccil.cowan.tagsoup.Parser");
+        Source input = new SAXSource(xmlReader, new InputSource("http://books.toscrape.com/"));
+        Result output = new StreamResult(System.out);
+        factory.newTransformer().transform(input, output);
     }
 
     public void saxonTransform() throws Exception {
