@@ -21,7 +21,7 @@ public class App {
         x = new Transforms(properties);
         d = new Database(properties);
         Result r = x.withJAXP();
-        d.persist(r        );
+        d.persist(r);
     }
 
 }
