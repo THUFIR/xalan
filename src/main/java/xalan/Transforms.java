@@ -37,15 +37,16 @@ public class Transforms {
     }
 
     public Result withJAXP() throws Exception {
-        URL xml = new URL(properties.getProperty("url"));       
-        InputStream stream = xml.openStream();
-        InputSource source = new InputSource(stream);
+        URL url = new URL(properties.getProperty("url"));       
+        InputStream inputStream = url.openStream();
+        InputSource inputSource = new InputSource(inputStream);
+
         TransformerFactory factory = TransformerFactory.newInstance();
         XMLReader xmlReader = XMLReaderFactory.createXMLReader("org.ccil.cowan.tagsoup.Parser");
-        Source input = new SAXSource(xmlReader, source);
-        Result output = new StreamResult(System.out);
-        factory.newTransformer().transform(input, output);
-        return output;
+        Source source = new SAXSource(xmlReader, inputSource);
+        Result result = new StreamResult(System.out);
+        factory.newTransformer().transform(source, result);
+        return result;
     }
 
     public void saxonTransform() throws Exception {
