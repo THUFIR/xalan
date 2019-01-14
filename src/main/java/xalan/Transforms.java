@@ -2,25 +2,33 @@ package xalan;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.util.Properties;
 import java.util.logging.Logger;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import net.sf.saxon.s9api.DocumentBuilder;
 import net.sf.saxon.s9api.Processor;
 import net.sf.saxon.s9api.Serializer;
 import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XsltCompiler;
 import net.sf.saxon.s9api.XsltExecutable;
 import net.sf.saxon.s9api.XsltTransformer;
+import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
@@ -37,7 +45,7 @@ public class Transforms {
     }
 
     public Result withJAXP() throws Exception {
-        URL url = new URL(properties.getProperty("url"));       
+        URL url = new URL(properties.getProperty("url"));
         InputStream inputStream = url.openStream();
         InputSource inputSource = new InputSource(inputStream);
 
@@ -74,6 +82,29 @@ public class Transforms {
         TransformerFactory tFactory = TransformerFactory.newInstance();
         Transformer transformer = tFactory.newTransformer(new StreamSource(new File(xsl)));
         transformer.transform(new StreamSource(new File(xml)), new StreamResult(new FileOutputStream(new File(output))));
+    }
+
+    public Document createDocumentFromURL(URL url) throws SAXException, IOException, TransformerException, ParserConfigurationException {
+        LOG.info(url.toString());
+
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        XMLReader xmlReader = XMLReaderFactory.createXMLReader("org.ccil.cowan.tagsoup.Parser");
+        Source source = new SAXSource(xmlReader, new InputSource(url.toString()));
+
+        DOMResult domResult = new DOMResult();
+
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(source, domResult);  //how do I find the result of this operation?
+
+        LOG.info(domResult.toString());  //traverse or iterate how?
+
+        javax.xml.parsers.DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+//        Document document = documentBuilder.parse();   ///bzzzt, wrong
+        Document fdf = documentBuilder.parse(new InputSource(url.openStream()));
+
+        //  Document document = (Document) domResult.getNode();
+        //   LOG.info(document.getDocumentElement().getTagName());
+        return fdf;
     }
 
 }
