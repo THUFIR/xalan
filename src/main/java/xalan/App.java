@@ -24,7 +24,8 @@ public class App {
         s = new ScraperForXML(properties);
      //   Result r = x.withJAXP();
 //        d.persist(r);
-        s.fetch("note");
+//        s.fetch("note");
+        x.createDocumentFromURL();
     }
 
 }

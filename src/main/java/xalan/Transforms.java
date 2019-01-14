@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Properties;
 import java.util.logging.Logger;
@@ -19,7 +20,6 @@ import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import net.sf.saxon.s9api.DocumentBuilder;
 import net.sf.saxon.s9api.Processor;
 import net.sf.saxon.s9api.Serializer;
 import net.sf.saxon.s9api.XdmNode;
@@ -84,8 +84,8 @@ public class Transforms {
         transformer.transform(new StreamSource(new File(xml)), new StreamResult(new FileOutputStream(new File(output))));
     }
 
-    public Document createDocumentFromURL(URL url) throws SAXException, IOException, TransformerException, ParserConfigurationException {
-        LOG.info(url.toString());
+    public Document createDocumentFromURL() throws Exception {
+        URL url = new URL(properties.getProperty("note"));
 
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         XMLReader xmlReader = XMLReaderFactory.createXMLReader("org.ccil.cowan.tagsoup.Parser");
@@ -99,12 +99,9 @@ public class Transforms {
         LOG.info(domResult.toString());  //traverse or iterate how?
 
         javax.xml.parsers.DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-//        Document document = documentBuilder.parse();   ///bzzzt, wrong
-        Document fdf = documentBuilder.parse(new InputSource(url.openStream()));
+        Document document = documentBuilder.parse(new InputSource(url.openStream()));
 
-        //  Document document = (Document) domResult.getNode();
-        //   LOG.info(document.getDocumentElement().getTagName());
-        return fdf;
+        return document;
     }
 
 }
