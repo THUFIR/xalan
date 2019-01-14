@@ -84,6 +84,12 @@ public class Transforms {
         transformer.transform(new StreamSource(new File(xml)), new StreamResult(new FileOutputStream(new File(output))));
     }
 
+    public File convert(Document d) throws Exception {
+        File f;
+        f = new File(d.getXmlEncoding());
+        return f;
+    }
+
     public Document createDocumentFromURL() throws Exception {
         URL url = new URL(properties.getProperty("note"));
 
@@ -102,6 +108,13 @@ public class Transforms {
         Document document = documentBuilder.parse(new InputSource(url.openStream()));
 
         return document;
+    }
+
+    void writeFile(File f) throws Exception {
+        URI path = new URI(properties.getProperty("output"));
+        File g = new File(path);
+        g.exists();
+        g.createNewFile();
     }
 
 }

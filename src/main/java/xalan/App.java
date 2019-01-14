@@ -1,8 +1,9 @@
 package xalan;
 
+import java.io.File;
 import java.util.Properties;
 import java.util.logging.Logger;
-import javax.xml.transform.Result;
+import org.w3c.dom.Document;
 
 public class App {
 
@@ -22,10 +23,12 @@ public class App {
         x = new Transforms(properties);
         d = new Database(properties);
         s = new ScraperForXML(properties);
-     //   Result r = x.withJAXP();
+        //   Result r = x.withJAXP();
 //        d.persist(r);
 //        s.fetch("note");
-        x.createDocumentFromURL();
+        Document d = x.createDocumentFromURL();
+        File f = x.convert(d);
+        x.writeFile(f);
     }
 
 }
