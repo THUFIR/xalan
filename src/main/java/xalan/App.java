@@ -10,6 +10,7 @@ public class App {
 
     private Transforms x;
     private Database d;
+    private ScraperForXML s;
     private Properties properties = new Properties();
 
     public static void main(String[] args) throws Exception {
@@ -20,8 +21,10 @@ public class App {
         properties.loadFromXML(App.class.getResourceAsStream("/xalan.xml"));
         x = new Transforms(properties);
         d = new Database(properties);
-        Result r = x.withJAXP();
-        d.persist(r);
+        s = new ScraperForXML(properties);
+     //   Result r = x.withJAXP();
+//        d.persist(r);
+        s.fetch("note");
     }
 
 }

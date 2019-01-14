@@ -11,5 +11,6 @@
     <entry key="books">http://books.toscrape.com/</entry>
     <entry key="noagenda">http://thufir.github.io/noagenda/</entry>
     <entry key="mobi">https://ebook.online-convert.com/convert-to-mobi</entry>
+    <entry key="note_db">note</entry>
 </properties>
 
