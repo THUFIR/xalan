@@ -27,8 +27,7 @@ public class App {
 //        d.persist(r);
 //        s.fetch("note");
         Document d = x.createDocumentFromURL();
-        File f = x.convert(d);
-        x.writeFile(f);
+        x.docToFile(d);
     }
 
 }

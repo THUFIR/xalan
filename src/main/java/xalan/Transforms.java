@@ -2,21 +2,19 @@ package xalan;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Properties;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
@@ -28,7 +26,6 @@ import net.sf.saxon.s9api.XsltExecutable;
 import net.sf.saxon.s9api.XsltTransformer;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
@@ -84,10 +81,14 @@ public class Transforms {
         transformer.transform(new StreamSource(new File(xml)), new StreamResult(new FileOutputStream(new File(output))));
     }
 
-    public File convert(Document d) throws Exception {
-        File f;
-        f = new File(d.getXmlEncoding());
-        return f;
+    public void docToFile(org.w3c.dom.Document document) throws Exception {
+        URI uri = new URI(properties.getProperty("output"));
+        DOMSource source = new DOMSource(document);
+        FileWriter writer = new FileWriter(new File(uri));
+        StreamResult result = new StreamResult(writer);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(source, result);
     }
 
     public Document createDocumentFromURL() throws Exception {
@@ -108,13 +109,6 @@ public class Transforms {
         Document document = documentBuilder.parse(new InputSource(url.openStream()));
 
         return document;
-    }
-
-    void writeFile(File f) throws Exception {
-        URI path = new URI(properties.getProperty("output"));
-        File g = new File(path);
-        g.exists();
-        g.createNewFile();
     }
 
 }
